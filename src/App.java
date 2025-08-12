@@ -2,19 +2,17 @@ import javax.swing.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        int boardWidth = 360;
-        int boardHeight = 640;
+        // main menu frame
+        JFrame menuFrame = new JFrame("Flappy Bird Menu");
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JFrame frame = new JFrame("Flappy Bird");
-        frame.setSize(boardWidth, boardHeight);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Menu menuPanel = new Menu(menuFrame);
 
-        FlappyBird flappyBird = new  FlappyBird();
-        frame.add(flappyBird);
-        frame.pack();
-        flappyBird.requestFocus();
-        frame.setVisible(true);
-    }
+        menuFrame.add(menuPanel);
+        menuFrame.pack();
+        menuFrame.setLocationRelativeTo(null);
+        menuFrame.setVisible(true);
+
+    } 
+
 }

@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
@@ -67,6 +66,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     boolean gameOver = false;
     double score = 0;
+    
 
     public FlappyBird() {
 
@@ -79,9 +79,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         backgroundImg = new ImageIcon(getClass().getResource("./flappybirdbg.png")).getImage();
         topPipeImg = new ImageIcon(getClass().getResource("./toppipe.png")).getImage();
         bottomPipeImg = new ImageIcon(getClass().getResource("./bottompipe.png")).getImage();
-
+        // load bird and pipes
         bird = new Bird(birdImg);
         pipes = new ArrayList<Pipe>();
+
+        
 
         // place pipes timer
         placePipesTimer = new Timer(1500, new ActionListener() {
@@ -137,6 +139,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             g.drawString(String.valueOf((int) score), 10, 35);
         }    
 
+
     }
 
     public void move() {
@@ -172,6 +175,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         a.y + a.height > b.y;
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         move();
@@ -205,4 +209,5 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {}
 
+    
 }
