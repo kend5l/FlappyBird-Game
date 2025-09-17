@@ -6,22 +6,25 @@ public class Menu extends JPanel {
     int menuWidth = 600;
     int menuHeight = 600;
     boolean isSelected = false;
+    private int difficulty = 0;
 
     private JButton startButton;
     private JButton easyButton;
     private JButton normalButton;
     private JButton hardButton;
     Graphics g;
-    //Image menuBackgroundImg;
+    Image menuBackgroundImg;
+    Image easyButtonImg;
+    Image normalButtonImg;
+    Image hardButtonImg;
    
 
     public Menu(JFrame menuFrame) {
         // set layout to null so we can freely place labels and buttons
         setLayout(null);
         setPreferredSize(new Dimension(menuWidth, menuHeight));
-       // menuBackgroundImg = new ImageIcon(getClass().getResource("./menubg.jpg")).getImage();
-        //g.drawImage(menuBackgroundImg, 0,0,menuWidth, menuHeight, null);
-
+        // images
+        menuBackgroundImg = new ImageIcon(getClass().getResource("/menubg.jpg")).getImage();
         addContents(menuFrame);
     }
 
@@ -42,7 +45,7 @@ public class Menu extends JPanel {
         easyButton.setFont(new Font("Arial", Font. BOLD, 15));
         easyButton.setBounds(230, 300, 120, 40);
         add(easyButton);
-
+       
         normalButton = new JButton("Normal");
         normalButton.setFont(new Font("Arial", Font. BOLD, 15));
         normalButton.setBounds(230, 370, 120, 40);
@@ -55,15 +58,15 @@ public class Menu extends JPanel {
 
          // difficulty button listeners
         easyButton.addActionListener(e -> {selectDifficulty(easyButton);
-        String difficulty = getDifficulty();
+        difficulty = 1;
         isSelected = true;});
         
         normalButton.addActionListener(e -> {selectDifficulty(normalButton);
-        String difficulty = getDifficulty();
+        difficulty = 2;
         isSelected = true;});
 
         hardButton.addActionListener(e -> {selectDifficulty(hardButton);
-        String difficulty = getDifficulty();
+        difficulty = 3;
         isSelected = true;});
 
         // once start is pressed, the menu will be disposed and the game will start
@@ -91,7 +94,7 @@ public class Menu extends JPanel {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        FlappyBird flappyBird = new  FlappyBird();
+        FlappyBird flappyBird = new  FlappyBird(frame, difficulty);
         frame.add(flappyBird);
         frame.pack();
         flappyBird.requestFocus();
@@ -108,13 +111,20 @@ public class Menu extends JPanel {
         selectedButton.setBackground(Color.GREEN);
     }
 
-    public String getDifficulty() {
-       if (easyButton.getBackground() == Color.GREEN) return "Easy";
-       else if (normalButton.getBackground() == Color.GREEN) return "Normal";
-       else if (hardButton.getBackground() == Color.GREEN) return "Hard";
-       else return "none";
+    public int getDifficulty() {
+       return difficulty;
     }
-    
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        draw(g);
+    }
+
+    public void draw(Graphics g) {
+        // background
+        g.drawImage(menuBackgroundImg, 0, 0, menuWidth, menuHeight, null);
+        // buttons
+    }
+
 
 
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.swing.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
+    private Menu menu;
     int boardWidth = 360;
     int boardHeight = 640;
 
@@ -66,10 +67,12 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     boolean gameOver = false;
     double score = 0;
-    
+    double highScore = 0;
+    private int difficulty;
 
-    public FlappyBird() {
-
+    public FlappyBird(JFrame frame, int difficulty) {
+        
+        this.difficulty = difficulty;
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setFocusable(true);
         addKeyListener(this);
@@ -79,11 +82,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         backgroundImg = new ImageIcon(getClass().getResource("./flappybirdbg.png")).getImage();
         topPipeImg = new ImageIcon(getClass().getResource("./toppipe.png")).getImage();
         bottomPipeImg = new ImageIcon(getClass().getResource("./bottompipe.png")).getImage();
+
         // load bird and pipes
         bird = new Bird(birdImg);
         pipes = new ArrayList<Pipe>();
-
-        
+        menu = new Menu(frame);
 
         // place pipes timer
         placePipesTimer = new Timer(1500, new ActionListener() {
@@ -94,16 +97,22 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         });
         placePipesTimer.start();
         
-        // game timer
+        // game timer 30FPS
         gameLoop = new Timer(1000/30, this);
         gameLoop.start();
         
     }
 
     public void placePipes() {
-        // pipes can be 1/4 of og height up to 3/4 of og height
+        // determine difficulty and adjust pipe gaps accordingly
+        int diffDistance = 0;
+        if (difficulty == 1) {diffDistance = 4;}
+        if (difficulty == 2) {diffDistance = 6;}
+        if (difficulty == 3) {diffDistance = 7;}
+
+       // pipes can be 1/4 of og height up to 3/4 of og height
         int randomPipeY = (int) (pipeY - pipeHeight / 4 - Math.random() * (pipeHeight / 2));
-        int openingSpace = boardHeight / 4;
+        int openingSpace = boardHeight / diffDistance;
         Pipe topPipe = new Pipe(topPipeImg);
         topPipe.y = randomPipeY;
         pipes.add(topPipe);
@@ -131,9 +140,15 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
         // score
         g.setColor(Color.white);
-        g.setFont(new Font("Arial", Font.PLAIN, 32));
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+
         if (gameOver) {
+            if (score > highScore) {
+                highScore = score;
+            }
             g.drawString("Game Over: " + String.valueOf((int) score), 10, 35);
+            g.drawString("High Score: " + String.valueOf((int) highScore), 10, 70);
+
         }    
         else {
             g.drawString(String.valueOf((int) score), 10, 35);
